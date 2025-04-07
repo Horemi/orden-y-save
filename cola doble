@@ -1,0 +1,135 @@
+#include <iostream> 
+#include "Nodo.h" //Se incluye a la clase Nodo
+using namespace std;
+void EncolarFin(Nodo*& inicio, Nodo*& fin) { //Punteros enviados por referencia   
+    Nodo* Elemento = new Nodo; //Creacion del nodo      
+    if (inicio == NULL) {
+
+        inicio = fin = Elemento; //Le asigno la direccion del primer nodo          
+        cout << "Codigo: "; cin >> Elemento->dato.placa;
+        cout << "Nombres:"; cin >> Elemento->dato.Color;
+        cout << "Carrera: "; cin >> Elemento->dato.Marca;
+
+    }
+    else {
+
+        fin->puntero = Elemento; //Asigno el puntero del anterior elemento al nuevo
+
+        fin = Elemento; //Cambio la direccion del ultimo nodo creado 
+
+        cout << "Codigo: "; cin >> Elemento->dato.placa;
+        cout << "Nombres: "; cin >> Elemento->dato.Color;
+        cout << "Carrera: "; cin >> Elemento->dato.Marca; cout << endl;
+
+    }
+
+
+} 
+void EncolarInicio(Nodo*& inicio, Nodo*& fin) { //Punteros enviados por referencia      
+    Nodo* Elemento = new Nodo; //Creacion del nodo      
+    if (inicio == NULL) {
+
+        fin = inicio = Elemento; //Le asigno la direccion del primer nodo          
+        cout << "Codigo: "; cin >> Elemento->dato.placa;
+        cout << "Nombres:"; cin >> Elemento->dato.Color;
+        cout << "Carrera: "; cin >> Elemento->dato.Marca;
+
+    }
+    else {
+
+    inicio->puntero = Elemento; //Asigno el puntero del anterior elemento al nuevo
+
+    inicio = Elemento; //Cambio la direccion del ultimo nodo creado 
+
+        cout << "Codigo: "; cin >> Elemento->dato.placa;
+        cout << "Nombres: "; cin >> Elemento->dato.Color;
+        cout << "Carrera: "; cin >> Elemento->dato.Marca; cout << endl;
+
+    }
+
+
+}
+void DesencolarInicio(Nodo*& inicio) {
+    if (inicio != NULL) {
+        cout << "Codigo: " << inicio->dato.placa << endl;
+        cout << "Nombres: " << inicio->dato.Color << endl;
+        cout << "Carrera: " << inicio->dato.Marca << endl;
+        inicio = inicio->puntero; // Cambio Inicio al siguiente nodo
+    }
+    else {
+        cout << "La cola se encuentra vacia" << endl;
+    }
+}
+void DesencolarFin(Nodo*& fin) {
+    if (fin != NULL) {
+        cout << "Codigo: " << fin->dato.placa << endl;
+        cout << "Nombres: " << fin->dato.Color << endl;
+        cout << "Carrera: " << fin->dato.Marca << endl;
+        cout << "            " << endl;
+        fin = fin->puntero; // Cambio Inicio al siguiente nodo
+    }
+    else {
+        cout << "La cola se encuentra vacia" << endl;
+    }
+}
+
+void mostrar(Nodo*& inicio, Nodo*& fin){
+    if (inicio==NULL){
+        cout << "La cola está vacía." << endl;
+        return;
+    }
+    Nodo* temp = fin;
+    while (temp!=NULL){
+        cout << "Codigo: " << inicio->dato.placa << endl;
+        cout << "Nombres: " << inicio->dato.Color << endl;
+        cout << "Carrera: " << inicio->dato.Marca << endl;
+        temp = temp->puntero;
+    }
+    cout << endl;
+}
+
+int main(int argc, char* argv[]) {
+    Nodo* inicio = NULL, * fin = NULL; //Punteros libres para el manejo de la cola
+    int opc = 0, respuesta = 0;
+    do {
+        cout << "1. LA COLA ESTA VACIA?" << endl;
+        cout << "2. ENCOLAR Inicio " << endl;
+        cout << "3. ENCOLAR fin " << endl;
+        cout << "4. DESENCOLAR inicio  " << endl;
+        cout << "5. DESENCOLAR fin" << endl;
+        cout << "6. Mostrar" << endl;
+        cout << "0. FINALIZAR" << endl;
+        cout << "Opcion: "; cin >> opc;
+
+
+        switch (opc) {
+        case 1:
+            if (inicio == NULL)
+                cout << "La cola se encuentra vacia" << endl;
+            else
+                cout << "Existe elemento(s) dentro de la cola" << endl;
+            break;
+        case 2:
+            EncolarInicio(inicio, fin);
+            break;
+        case 3:
+            EncolarFin(inicio, fin);
+            break;
+        case 4:
+            DesencolarInicio(inicio);
+            break;
+        case 5:
+            DesencolarFin(fin);
+            break;
+        case 6:
+          mostrar(inicio, fin);
+            break;
+
+        }
+        
+
+    } while (opc != 0);
+
+
+    return 0;
+}
