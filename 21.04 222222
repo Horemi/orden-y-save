@@ -1,0 +1,144 @@
+//main
+#include <iostream>
+#include <string>
+#include "Empleado.h"
+#include "Planilla.h"
+
+using namespace std;
+
+
+int main() {
+	int n;
+	do {
+		cout<< "Ingrese el numero total de empleados: ";
+		cin >>n;
+	} while (n<1 || n>MAX);
+
+
+
+	return 0;
+	
+}
+
+//empledo.h
+#pragma once
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Empleado
+{
+private:
+	int codigo;
+	string nombre;
+	string apellido;
+	string fecnac;
+	string direccion;
+	string telefono;
+	float sb;
+
+public:
+	Empleado();
+	int getcod();
+	void setcod(string _codigo);
+	float getsb();
+	void setsb( float _sb);
+	string getnombre();
+	void setnombre(float _nombre);
+	string getapellido();
+	void setapellido(float _apellido);
+	string getfecnac();
+	void setfecnac(float _fecnac);
+	string getdireccion();
+	void setdireccion(float _direccion);
+	string gettelefono();
+	void settelefono(float _tefelono);
+	//cargamos todos los datos de los empleados
+	void cargar();
+
+};
+
+//empleado .cpp
+#include "Empleado.h"
+Empleado() {
+
+}
+int getcod() {
+	return codigo;
+}
+void setcod(string _codigo) {
+	codigo = _codigo;
+}
+float getsb() {
+	return sb;
+}
+void setsb(float _sb) {
+	sb = _sb;
+}
+string getnombre() {
+	return nombre;
+}
+void setnombre(float _nombre) {
+	nombre = _nombre;
+}
+string getapellido() {
+	return apellido;
+}
+void setapellido(float _apellido) {
+	apellido = _apellido;
+}
+string getfecnac() {
+	return fecnac;
+}
+void setfecnac(float _fecnac) {
+	fecnac = _fecnac;
+}
+string getdireccion() {
+	return direccion;
+}
+void setdireccion(float _direccion) {
+	direccion = _direccion;
+}
+string gettelefono() {
+	return telefono;
+}
+void settelefono(float _tefelono) {
+	telefono = _telefono;
+}
+
+
+void Empleado::cargar() {
+	cout << "Ingre nombre: ";
+	cin >> nombre;
+	//pedimos todos los datos
+
+}
+//planilla.h
+#pragma once
+#include "Empleado.h"
+#define MAX 10
+class Planilla
+{
+private:
+	Empleado planilla[MAX];
+public:
+	Planilla();
+	//pida los datos de los empleados
+	void cargarPlanilla(int n);
+	void mostrarPlanilla(int n);
+};
+
+//empleado.cpp
+#include "Planilla.h"
+Planilla::Planilla() {
+
+}
+//pida los datos de los empleados
+void Planilla::cargarPlanilla(int n) {
+	for (int i = 0; i < n; i++) {
+		planilla[i].cargar();
+	}
+}
+void Planilla::mostrarPlanilla(int n) {
+
+}
