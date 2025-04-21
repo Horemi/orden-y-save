@@ -1,0 +1,110 @@
+/main
+#include <iostream>
+#include <string>
+#include "Fila.h"
+#include "Matriz.h"
+using namespace std;
+#define MAX 10
+
+
+// Función que genera la matriz final a partir del "vector de vectores"
+void procesarDatos(Fila entrada[], int n, Matriz& salida) {
+    int filaSalida = 0;
+    for (int i = 0; i < n; i++) {        // recorrer filas de entrada
+        for (int j = 0; j < n; j++) {    // recorrer columnas
+            float valor = entrada[i].get(j);
+            for (int k = 0; k < n; k++) {
+                salida.setDato(filaSalida, k, valor);
+            }
+            filaSalida++;
+        }
+    }
+}
+
+int main() {
+    const int n = 3;
+    float h;
+    Fila entrada[MAX];
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            cout << "Ingrese los valores de la matriz: ";
+            cin >> h;
+            entrada[i].set(j, h);
+        }  
+    }
+    
+    /*
+    entrada[0].set(0, 1); entrada[0].set(1, 3); entrada[0].set(2, 45);
+    entrada[1].set(0, 2); entrada[1].set(1, 4); entrada[1].set(2, 89);
+    entrada[2].set(0, 3);  entrada[2].set(1, 5); entrada[2].set(2, 35);
+    */
+
+    // Creamos matriz de salida n*n
+    Matriz salida(n * n, n);
+
+    procesarDatos(entrada, n, salida);
+
+    cout << "Matriz Generada:" << endl;
+    salida.mostrar();
+
+    return 0;
+}
+
+
+/matriz.h
+#pragma once
+#include <string>
+#include "Fila.h"
+class Matriz {
+private:
+    Fila filas[MAX];
+    int totalFilas;
+    int columnas;
+
+public:
+    Matriz(int totalFilas_, int columnas_) {
+        totalFilas = totalFilas_;
+        columnas = columnas_;
+    }
+
+    void setDato(int i, int j, float valor) {
+        filas[i].set(j, valor);
+    }
+
+    float getDato(int i, int j) {
+        return filas[i].get(j);
+    }
+
+    void mostrar() {
+        for (int i = 0; i < totalFilas; i++) {
+            filas[i].mostrar(columnas);
+        }
+    }
+};
+
+/fila.h
+#pragma once
+#include <iostream>
+using namespace std;
+#define MAX 10
+
+class Fila {
+private:
+    float elementos[MAX];
+
+public:
+    void set(int i, float valor) {
+        elementos[i] = valor;
+    }
+
+    float get(int i) {
+        return elementos[i];
+    }
+
+    void mostrar(int n) {
+        for (int i = 0; i < n; i++) {
+            cout << elementos[i] << "\t";
+        }
+        cout << endl;
+    }
+};
