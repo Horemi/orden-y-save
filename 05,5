@@ -1,0 +1,130 @@
+//
+#include <iostream>
+#include <string>
+#include "Node.h"
+#include "Linkedlist.h"
+using namespace std;
+
+//manejar structura node
+
+
+int main()
+{
+    int A[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+    int n = sizeof(A) / sizeof(A[0]);
+    Linkedlist l(A, n); //instanciar la clase linkedlist y nombre del objeto l
+    l.display();
+    l.insert(A, n);
+   
+    cout << "La cantidad de nodos es: " << l.length() << endl;
+    cout << "El mayor valor es: " << l.mayor(A, n) << endl;
+    cout << "El menor valor es: " << l.menor(A, n) << endl;
+
+
+
+}
+
+
+#pragma once
+class Node {
+public:
+    int data;
+    Node* next;
+};
+
+
+
+#pragma once
+#include "Node.h"
+class Linkedlist {
+private: //solo podes accesder de el por medio de metodos
+    Node* first; //tambien head
+public:
+    Linkedlist() {
+        first = NULL;
+    }
+    Linkedlist(int A[], int n);
+    void display();
+    void insert(int A[], int n);
+    int length();
+    int mayor(int A[], int n);
+    int menor(int A[], int n);
+    /*
+    ~Linkedlist();
+   
+    
+    void removet(int A[], int n);
+    void search(int A[], int n);
+    */
+};
+
+
+
+
+#include <iostream>
+#include "Linkedlist.h"
+
+using namespace std;
+Linkedlist::Linkedlist(int A[], int n) {
+	Node* t, * last;
+	first = new Node();
+	first->data = A[0];
+	first->next = NULL;
+	last = first;
+	for (int i = 1; i < n; i++) {
+		t = new Node();
+		t->data = A[i];
+		t->next = NULL;
+		last->next = t; //se crea el puente
+		last = t;
+
+	}
+}
+
+void Linkedlist::display() {
+	Node* p = first;
+	while (p != NULL) {
+		cout << p->data << " , ";
+		p = p->next;
+	}
+	cout << endl;
+}
+void Linkedlist::insert(int A[], int n) {
+
+}
+
+int Linkedlist::length() {
+	Node* p = first;
+	int count = 0;
+	while (p) {
+		count++;
+		p = p->next;
+	}
+	return count;
+}
+
+int Linkedlist::mayor(int A[], int n) {
+	int mayor = A[0];
+	for (int i = 1; i < n; i++) {
+		if (A[i] > mayor) {
+			mayor = A[i];
+		}
+	}
+	return mayor;
+}
+
+int Linkedlist::menor(int A[], int n) {
+	int menor = A[0];
+	for (int i = 1; i < n; i++) {
+		if (A[i] < menor) {
+			menor = A[i];
+		}
+	}
+	return menor;
+}
+/*
+~Linkedlist();
+
+void removet(int A[], int n);
+void search(int A[], int n);
+int length();*/
