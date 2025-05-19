@@ -1,0 +1,139 @@
+// definimos pila si o si
+int pila[100];  // pila de tamaño fijo
+int tope = -1;
+
+void push(int x) {
+    if (tope < 99) pila[++tope] = x;
+}
+//pila.h
+#pragma once
+
+const int MAX = 5;
+
+class PilaEstatica {
+private:
+    int pila[MAX];
+    int tope;
+
+public:
+    PilaEstatica();
+
+    bool estaVacia();
+    bool estaLlena();
+    void push(int valor);
+    void pop();
+    int top();
+    void mostrar();
+};
+
+//pila.cpp
+#include "PilaEstatica.h"
+#include <iostream>
+using namespace std;
+
+PilaEstatica::PilaEstatica() {
+    tope = -1;
+}
+
+bool PilaEstatica::estaVacia() {
+    return tope == -1;
+}
+
+bool PilaEstatica::estaLlena() {
+    return tope == MAX - 1;
+}
+
+void PilaEstatica::push(int valor) {
+    if (!estaLlena()) {
+        tope++;
+        pila[tope] = valor;
+    } else {
+        cout << "La pila esta llena.\n";
+    }
+}
+
+void PilaEstatica::pop() {
+    if (!estaVacia()) {
+        tope--;
+    } else {
+        cout << "La pila esta vacia.\n";
+    }
+}
+
+int PilaEstatica::top() {
+    if (!estaVacia()) {
+        return pila[tope];
+    } else {
+        cout << "La pila esta vacia.\n";
+        return -1; // valor de error
+    }
+}
+
+void PilaEstatica::mostrar() {
+    if (estaVacia()) {
+        cout << "La pila esta vacia.\n";
+    } else {
+        cout << "Contenido de la pila (de cima a fondo):\n";
+        for (int i = tope; i >= 0; i--) {
+            cout << pila[i] << endl;
+        }
+    }
+}
+
+//main.cpp
+#include <iostream>
+#include "PilaEstatica.h"
+using namespace std;
+
+// Prototipo
+void menuPilaEstatica();
+
+int main() {
+    menuPilaEstatica();
+    return 0;
+}
+
+// Definición
+void menuPilaEstatica() {
+    PilaEstatica pila;
+    int opcion, valor;
+
+    do {
+        cout << "\n--- MENU PILA ESTATICA ---\n";
+        cout << "1. Push (insertar)\n";
+        cout << "2. Pop (eliminar)\n";
+        cout << "3. Top (ver cima)\n";
+        cout << "4. Mostrar pila\n";
+        cout << "5. Salir\n";
+        cout << "Elige una opcion: ";
+        cin >> opcion;
+
+        switch (opcion) {
+        case 1:
+            cout << "Ingresa un valor: ";
+            cin >> valor;
+            pila.push(valor);
+            break;
+
+        case 2:
+            pila.pop();
+            break;
+
+        case 3:
+            cout << "Elemento en la cima: " << pila.top() << endl;
+            break;
+
+        case 4:
+            pila.mostrar();
+            break;
+
+        case 5:
+            cout << "Saliendo del programa...\n";
+            break;
+
+        default:
+            cout << "Opcion invalida.\n";
+        }
+    } while (opcion != 5);
+}
+
