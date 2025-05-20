@@ -1,0 +1,198 @@
+//usa nodos, datos, punteros
+//dato.h
+#pragma once
+#include <string>
+using namespace std;
+
+class Dato {
+public:
+    int codigo;
+    string nombre;
+    int edad;
+
+    Dato();
+    Dato(int c, string n, int e);
+};
+
+//dato.cpp
+#include "Dato.h"
+
+Dato::Dato() {
+    codigo = 0;
+    nombre = "";
+    edad = 0;
+}
+
+Dato::Dato(int c, string n, int e) {
+    codigo = c;
+    nombre = n;
+    edad = e;
+}
+
+//Nodo.h
+#pragma once
+#include "Dato.h"
+
+class Nodo {
+public:
+    Dato dato;
+    Nodo* siguiente;
+
+    Nodo(Dato d);
+};
+
+//Nodo.cpp
+#include "Nodo.h"
+
+Nodo::Nodo(Dato d) {
+    dato = d;
+    siguiente = nullptr;
+}
+
+//PilaEmpleados.h
+#pragma once
+#include "Nodo.h"
+
+class PilaEmpleados {
+private:
+    Nodo* cima;
+
+public:
+    PilaEmpleados();
+    ~PilaEmpleados();
+
+    void push(Dato d);
+    void pop();
+    Dato top();
+    bool estaVacia();
+    void mostrar();
+};
+
+//PilaEmpleados.cpp
+#include "PilaEmpleados.h"
+#include <iostream>
+using namespace std;
+
+PilaEmpleados::PilaEmpleados() {
+    cima = nullptr;
+}
+
+PilaEmpleados::~PilaEmpleados() {
+    while (!estaVacia()) {
+        pop();
+    }
+}
+
+void PilaEmpleados::push(Dato d) {
+    Nodo* nuevo = new Nodo(d);
+    nuevo->siguiente = cima;
+    cima = nuevo;
+}
+
+void PilaEmpleados::pop() {
+    if (!estaVacia()) {
+        Nodo* temp = cima;
+        cima = cima->siguiente;
+        delete temp;
+    } else {
+        cout << "La pila esta vacia.\n";
+    }
+}
+
+Dato PilaEmpleados::top() {
+    if (!estaVacia()) {
+        return cima->dato;
+    } else {
+        cout << "La pila esta vacia.\n";
+        return Dato();
+    }
+}
+
+bool PilaEmpleados::estaVacia() {
+    return cima == nullptr;
+}
+
+void PilaEmpleados::mostrar() {
+    if (estaVacia()) {
+        cout << "La pila esta vacia.\n";
+    } else {
+        Nodo* actual = cima;
+        cout << "Contenido de la pila:\n";
+        while (actual != nullptr) {
+            Dato d = actual->dato;
+            cout << "Codigo: " << d.codigo
+                 << ", Nombre: " << d.nombre
+                 << ", Edad: " << d.edad << endl;
+            actual = actual->siguiente;
+        }
+    }
+}
+
+//main.cpp
+#include <iostream>
+#include "PilaEmpleados.h"
+using namespace std;
+
+void menuPila();
+
+int main() {
+    menuPila();
+    return 0;
+}
+
+void menuPila() {
+    PilaEmpleados pila;
+    int opcion;
+
+    do {
+        cout << "\n--- MENU PILA DINAMICA EMPLEADOS ---\n";
+        cout << "1. Insertar dato (push)\n";
+        cout << "2. Eliminar dato (pop)\n";
+        cout << "3. Ver dato en la cima (top)\n";
+        cout << "4. Mostrar pila\n";
+        cout << "5. Salir\n";
+        cout << "Opcion: ";
+        cin >> opcion;
+
+        switch (opcion) {
+        case 1: {
+            int codigo, edad;
+            string nombre;
+            cout << "Codigo: ";
+            cin >> codigo;
+            cin.ignore();
+            cout << "Nombre: ";
+            getline(cin, nombre);
+            cout << "Edad: ";
+            cin >> edad;
+            pila.push(Dato(codigo, nombre, edad));
+            break;
+        }
+
+        case 2:
+            pila.pop();
+            break;
+
+        case 3: {
+            Dato d = pila.top();
+            if (!pila.estaVacia()) {
+                cout << "Dato en la cima -> "
+                     << "Codigo: " << d.codigo << ", Nombre: " << d.nombre << ", Edad: " << d.edad << endl;
+            }
+            break;
+        }
+
+        case 4:
+            pila.mostrar();
+            break;
+
+        case 5:
+            cout << "Saliendo...\n";
+            break;
+
+        default:
+            cout << "Opcion invalida.\n";
+        }
+    } while (opcion != 5);
+}
+
