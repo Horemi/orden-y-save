@@ -1,1 +1,122 @@
+//ejercicio de 3er parcial
+//dato.h
+#ifndef DATO_H
+#define DATO_H
+
+using namespace std;
+
+class Dato {
+private:
+    int dia;
+    int hora;
+    float litros;
+
+public:
+    Dato();
+    void cargar();
+    void mostrar();
+};
+
+#endif
+
+//Dato.cpp
+#include "Dato.h"
+#include <iostream>
+
+using namespace std;
+
+Dato::Dato() {
+    dia = 0;
+    hora = 0;
+    litros = 0;
+}
+
+void Dato::cargar() {
+    cout << "Ingrese dia: ";
+    cin >> dia;
+    cout << "Ingrese hora (0-23): ";
+    cin >> hora;
+    cout << "Ingrese litros de aceite gastado: ";
+    cin >> litros;
+}
+
+void Dato::mostrar() {
+    cout << "Dia: " << dia << ", Hora: " << hora << ", Litros: " << litros << endl;
+}
+
+//MatrizAceite.h
+#ifndef MATRIZ_ACEITE_H
+#define MATRIZ_ACEITE_H
+
+#include "Dato.h"
+
+using namespace std;
+
+class MatrizAceite {
+private:
+    int n;
+    Dato* datos;
+
+public:
+    MatrizAceite(int tam);
+    ~MatrizAceite();
+    void cargarDatos();
+    void mostrarDatos();
+};
+
+#endif
+
+//MatrizAceite.cpp
+#include "MatrizAceite.h"
+#include <iostream>
+
+using namespace std;
+
+MatrizAceite::MatrizAceite(int tam) {
+    n = tam;
+    datos = new Dato[n * n];
+}
+
+MatrizAceite::~MatrizAceite() {
+    delete[] datos;
+}
+
+void MatrizAceite::cargarDatos() {
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            cout << "Cargar dato para posicion [" << i << "][" << j << "]" << endl;
+            datos[i * n + j].cargar();
+        }
+    }
+}
+
+void MatrizAceite::mostrarDatos() {
+    cout << "\nDatos de aceite cargados:\n";
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            cout << "[" << i << "][" << j << "]: ";
+            datos[i * n + j].mostrar();
+        }
+    }
+}
+
+//main.cpp
+#include <iostream>
+#include "MatrizAceite.h"
+
+using namespace std;
+
+int main() {
+    int n;
+
+    cout << "Ingrese el tamaño de la matriz NxN: ";
+    cin >> n;
+
+    MatrizAceite matriz(n);
+
+    matriz.cargarDatos();
+    matriz.mostrarDatos();
+
+    return 0;
+}
 
