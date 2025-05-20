@@ -1,0 +1,222 @@
+//usando, nodos, datos
+//Dato.h
+#pragma once
+
+class Dato {
+private:
+    int valor;
+
+public:
+    Dato(int v = 0);
+    int getValor() const;
+    void setValor(int v);
+};
+
+//Dato.cpp
+#include "Dato.h"
+
+Dato::Dato(int v) : valor(v) {}
+
+int Dato::getValor() const {
+    return valor;
+}
+
+void Dato::setValor(int v) {
+    valor = v;
+}
+
+//Nodo.h
+#pragma once
+#include "Dato.h"
+
+class Nodo {
+private:
+    Dato dato;
+    Nodo* siguiente;
+
+public:
+    Nodo(Dato dato);
+    Dato getDato() const;
+    void setDato(Dato dato);
+    Nodo* getSiguiente() const;
+    void setSiguiente(Nodo* sig);
+};
+
+//Nodo.cpp
+#include "Nodo.h"
+
+Nodo::Nodo(Dato dato) : dato(dato), siguiente(nullptr) {}
+
+Dato Nodo::getDato() const {
+    return dato;
+}
+
+void Nodo::setDato(Dato dato) {
+    this->dato = dato;
+}
+
+Nodo* Nodo::getSiguiente() const {
+    return siguiente;
+}
+
+void Nodo::setSiguiente(Nodo* sig) {
+    siguiente = sig;
+}
+
+//ListaEnlazada.h
+#pragma once
+#include "Nodo.h"
+
+class ListaEnlazada {
+private:
+    Nodo* cabeza;
+
+public:
+    ListaEnlazada();
+    ~ListaEnlazada();
+    void insertarAlFinal(Dato dato);
+    void insertarAlInicio(Dato dato);
+    void eliminar(int valor); // elimina por valor de Dato
+    bool buscar(int valor) const;
+    void mostrar() const;
+};
+
+//ListaEnlazada.cpp
+#include "ListaEnlazada.h"
+#include <iostream>
+
+using namespace std;
+
+ListaEnlazada::ListaEnlazada() : cabeza(nullptr) {}
+
+ListaEnlazada::~ListaEnlazada() {
+    Nodo* actual = cabeza;
+    while (actual) {
+        Nodo* temp = actual;
+        actual = actual->getSiguiente();
+        delete temp;
+    }
+}
+
+void ListaEnlazada::insertarAlFinal(Dato dato) {
+    Nodo* nuevo = new Nodo(dato);
+    if (!cabeza) {
+        cabeza = nuevo;
+    } else {
+        Nodo* temp = cabeza;
+        while (temp->getSiguiente()) {
+            temp = temp->getSiguiente();
+        }
+        temp->setSiguiente(nuevo);
+    }
+}
+
+void ListaEnlazada::insertarAlInicio(Dato dato) {
+    Nodo* nuevo = new Nodo(dato);
+    nuevo->setSiguiente(cabeza);
+    cabeza = nuevo;
+}
+
+void ListaEnlazada::eliminar(int valor) {
+    Nodo* actual = cabeza;
+    Nodo* anterior = nullptr;
+
+    while (actual && actual->getDato().getValor() != valor) {
+        anterior = actual;
+        actual = actual->getSiguiente();
+    }
+
+    if (!actual) return;
+
+    if (!anterior) {
+        cabeza = actual->getSiguiente();
+    } else {
+        anterior->setSiguiente(actual->getSiguiente());
+    }
+
+    delete actual;
+}
+
+bool ListaEnlazada::buscar(int valor) const {
+    Nodo* actual = cabeza;
+    while (actual) {
+        if (actual->getDato().getValor() == valor)
+            return true;
+        actual = actual->getSiguiente();
+    }
+    return false;
+}
+
+void ListaEnlazada::mostrar() const {
+    Nodo* actual = cabeza;
+    while (actual) {
+        cout << actual->getDato().getValor() << " -> ";
+        actual = actual->getSiguiente();
+    }
+    cout << "NULL" << endl;
+}
+
+//main.cpp
+#include <iostream>
+#include "ListaEnlazada.h"
+#include "Dato.h"
+
+using namespace std;
+
+int main() {
+    ListaEnlazada lista;
+    int opcion, valor;
+
+    do {
+        cout << "\n----- MENU -----\n";
+        cout << "1. Insertar al inicio\n";
+        cout << "2. Insertar al final\n";
+        cout << "3. Eliminar valor\n";
+        cout << "4. Buscar valor\n";
+        cout << "5. Mostrar lista\n";
+        cout << "0. Salir\n";
+        cout << "Seleccione una opción: ";
+        cin >> opcion;
+
+        switch (opcion) {
+            case 1:
+                cout << "Ingrese un valor: ";
+                cin >> valor;
+                lista.insertarAlInicio(Dato(valor));
+                break;
+
+            case 2:
+                cout << "Ingrese un valor: ";
+                cin >> valor;
+                lista.insertarAlFinal(Dato(valor));
+                break;
+
+            case 3:
+                cout << "Valor a eliminar: ";
+                cin >> valor;
+                lista.eliminar(valor);
+                break;
+
+            case 4:
+                cout << "Valor a buscar: ";
+                cin >> valor;
+                cout << (lista.buscar(valor) ? "Valor encontrado." : "Valor no encontrado.") << endl;
+                break;
+
+            case 5:
+                cout << "Lista actual: ";
+                lista.mostrar();
+                break;
+
+            case 0:
+                cout << "Saliendo del programa." << endl;
+                break;
+
+            default:
+                cout << "Opción no válida." << endl;
+        }
+
+    } while (opcion != 0);
+
+    return 0;
+}
